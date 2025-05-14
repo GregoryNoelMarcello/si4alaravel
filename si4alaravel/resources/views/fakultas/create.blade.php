@@ -2,35 +2,34 @@
 @section('title', 'Fakultas')
 
 @section('content')
-    <!--begin::Row-->
-    <div class="row">
+<!--begin::Row-->
+<div class="row">
         <div class="col-12">
-            <div class="card card-primary card-outline mb-4">
+        <!-- Default box -->
+        <div class="card card-primary card-outline mb-4">
                   <!--begin::Header-->
-                  <div class="card-header"><div class="card-title">Quick Example</div></div>
+                  <div class="card-header"><div class="card-title">Tambah Fakultas</div></div>
                   <!--end::Header-->
                   <!--begin::Form-->
-                  <form>
+                  <form action="{{route('fakultas.store')}}" method="POST">
+                  @csrf
                     <!--begin::Body-->
                     <div class="card-body">
                       <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <div id="emailHelp" class="form-text">
-                          We'll never share your email with anyone else.
-                        </div>
+                        <label for="nama" class="form-label">Nama Fakultas</label>
+                        <input type="text" class="form-control" name="nama">
                       </div>
                       <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
+                        <label for="singkatan" class="form-label">Singkatan</label>
+                        <input type="text" class="form-control" name="singkatan">
                       </div>
-                      <div class="input-group mb-3">
-                        <input type="file" class="form-control" id="inputGroupFile02">
-                        <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                      <div class="mb-3">
+                        <label for="dekan" class="form-label">Nama Dekan</label>
+                        <input type="text" class="form-control" name="dekan">
                       </div>
-                      <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                      <div class="mb-3">
+                        <label for="wakil_dekan" class="form-label">Nama Wakil Dekan</label>
+                        <input type="text" class="form-control" name="wakil_dekan">
                       </div>
                     </div>
                     <!--end::Body-->
@@ -45,4 +44,5 @@
         </div>
     </div>
     <!--end::Row-->
+
 @endsection
