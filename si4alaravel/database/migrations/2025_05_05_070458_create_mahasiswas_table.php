@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mahasiswa', function (Blueprint $table) {
+        Schema::create('mahasiswas', function (Blueprint $table) {
             $table->id();
-            $table->string('npm', 11);
-            $table->string('nama', 30);
-            $table->enum('jk', ['L', 'P']);
+            $table->string('npm',11);
+            $table->string('nama',30);
+            $table->enum('jk',['L','P']);
             $table->date('tanggal_lahir');
-            $table->string('tempat_lahir', 30);
-            $table->string('asal_sma', 30);
+            $table->string('tempat_lahir',30);
+            $table->string('asal_sma',30);
             $table->foreignId('prodi_id')->constrained('prodi')->onDelete('restrict')->onUpdate('restrict');
-            $table->string('foto', 50)->nullable();
+            $table->string('foto',50)->nullable();  
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mahasiswa');
+        Schema::dropIfExists('mahasiswas');
     }
 };

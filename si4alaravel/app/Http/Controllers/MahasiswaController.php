@@ -13,10 +13,8 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        // Panggil model mahasiswa menggunakan eloquent / do Query
-        $mahasiswa = Mahasiswa::all(); // sama dengan perintah SQL select * from mahasiswa
-        //dd($mahasiswa); // singkatan DD =
-        return view('mahasiswa.index')->with('mahasiswa', $mahasiswa); // selain compact bisa menggunakan with
+        $mahasiswa = Mahasiswa::all();
+        return view('mahasiswa.index', compact('mahasiswa'));
     }
 
     /**
@@ -36,27 +34,25 @@ class MahasiswaController extends Controller
         // validasi input
         $input = $request->validate([
             'npm' => 'required|unique:mahasiswa',
-            'nama' => 'required|max:10',
-            'jenis_kelamin' => 'required',
+            'nama' => 'required',
+            'jk' => 'required',
+            'tanggal_lahir' => 'required',
             'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required|date',
             'asal_sma' => 'required',
-            'prodi_id' => 'required|exists:prodi,id',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'prodi_id' => 'required',
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         // upload foto
         if ($request->hasFile('foto')) {
             $file = $request->file('foto'); // ambil file foto
-            $filename = time() . '.' . $file->getClientOriginalExtension(); 
+            $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename); // simpan foto ke folder public/images
-            $input['foto'] = $filename; // simpan nama file baru ke input
+            $input['foto'] = $filename; // simpan nama file baru ke $input
         }
-
-        
-        // simpan data ke tabel prodi
+        // simpan data ke tabel mahasiswa
         Mahasiswa::create($input);
-        // redirect ke halaman prodi.index
-        return redirect()->route('prodi.index')->with('success', 'Data prodi berhasil ditambahkan!');
+        // redirect ke route mahasiswa.index
+        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil ditambahkan.');
     }
 
     /**
@@ -64,7 +60,7 @@ class MahasiswaController extends Controller
      */
     public function show(Mahasiswa $mahasiswa)
     {
-        // dd($mahasiswa);
+        // dd($mahasiswa)
         return view('mahasiswa.show', compact('mahasiswa'));
     }
 
@@ -87,8 +83,19 @@ class MahasiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mahasiswa $mahasiswa)
+    public function destroy($mahasiswa)
     {
-        //
+        $mahasiswa = Mahasiswa::findOrFail($mahasiswa);
+        //dd($mahasiswa);
+
+        // hapus foto jika ada
+        if ($mahasiswa->foto) {
+            $fotoPath = public_path('images/' . $mahasiswa->foto);
+            if (file_exists($fotoPath)) {
+                unlink($fotoPath); // hapus file foto
+            }
+        }
+        $mahasiswa->delete();
+        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil dihapus.');
     }
 }

@@ -30,37 +30,39 @@
             </div>
             </div>
             <div class="card-body">
-               <table class="table table-bordered table-striped">
-                <tr>
-                    <th>NPM</th>
-                    <td>{{ $mahasiswa-> npm}}</td>
-                </tr>
-                <tr>
-                    <th>Nama</th>
-                    <td>{{ $mahasiswa-> nama}}</td>
-                </tr>
-                <tr>
-                    <th>Tempat, Tanggal Lahir</th>
-                    <td>{{ $mahasiswa->tempat_lahir}}, {{ $mahasiswa->tanggal_lahir}}</td>
-                </tr>
-                <tr>
-                    <th>Asal SMA</th>
-                    <td>{{ $mahasiswa-> asal_sma}}</td>
-                </tr>
-                <tr>
-                    <th>Progam Studi</th>
-                    <td>{{ $mahasiswa->prodi->nama}}</td>
-                </tr>
-                <tr>
-                    <th>Progam Studi</th>
-                    <td>{{ $mahasiswa->prodi->fakultas->nama}}</td>
-                </tr>
-                <tr>       
-                    <td colspan="2">
-                        <img src="{{ asset('images/'.$mahasiswa->foto) }}" class="img-fluid">    
-                    </td>
-                </tr>
-               </table>
+                <a href="{{ route ('mahasiswa.create')}}" class="btn btn-primary">Tambah Mahasiswa</a>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>NPM</th>
+                            <th>Nama</th>
+                            <th>Prodi</th>
+                            <th>Fakultas</th>
+                            <th>Foto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($mahasiswa as $item)
+                            <tr>                    
+                                <td>{{ $item->npm }}</td>
+                                <td>{{ $item->nama }}</td>
+                                <td>{{ $item->prodi->nama }}</td>
+                                <td>{{ $item->prodi->fakultas->nama}}</td>
+                                <td><img src="images/{{$item->foto }}" width="80px" /></td>
+                                <td>
+                                    <a href="{{ route('mahasiswa.show', $item->id) }}" class="btn btn-info">Show</a>
+                                    <a href="{{ route('mahasiswa.edit', $item->id) }}" class="btn btn-warning">Edit</a>
+                                    <form action="{{ route('mahasiswa.destroy', $item->id) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger show_confirm" data-lte-toggle="tooltip" title="Delete" data-nama="{{$item->nama}}">Delete</button>
+                                    </form>
+                                </td>
+                            </tr> 
+                        @endforeach
+                    </tbody>
+                </table>
+                
         </div>
             <!-- /.card-body -->
             <!-- <div class="card-footer">Footer</div> -->
@@ -69,6 +71,6 @@
         <!-- /.card -->
         </div>
     </div>
-@endsection
     <!--end::Row-->
- 
+
+@endsection

@@ -9,18 +9,18 @@ class Mahasiswa extends Model
     protected $table = 'mahasiswa';
 
     protected $fillable = [
-            'npm',
-            'nama',
-            'jenis_kelamin',
-            'tempat_lahir',
-            'tanggal_lahir',
-            'asal_sma',
-            'prodi_id',
-            'foto'
-        ];
+        'npm',
+        'nama',
+        'jk',
+        'tanggal_lahir',
+        'tempat_lahir',
+        'asal_sma',
+        'prodi_id',
+        'foto'
+    ];  
 
     public function prodi()
-    { 
-        return $this->belongsTo(Prodi::class, 'prodi_id', 'id');
+    {
+        return $this->belongsTo(Prodi::class);
     }
 }

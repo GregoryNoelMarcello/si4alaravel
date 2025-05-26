@@ -12,10 +12,8 @@ class FakultasController extends Controller
      */
     public function index()
     {
-        // panggil model fakultas menggunakan eloquent
-        $fakultas = Fakultas::all(); // perintah SQL select * from fakultas
-        // dd($fakultas); // dump and die
-        return view('fakultas.index', compact('fakultas')); // selain compact, bisa menggunakan with()
+        $fakultas = Fakultas::all();
+        return view('fakultas.index', compact('fakultas'));
     }
 
     /**
@@ -23,7 +21,7 @@ class FakultasController extends Controller
      */
     public function create()
     {
-        //
+        return view('fakultas.create');
     }
 
     /**
@@ -31,15 +29,29 @@ class FakultasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validasi input
+        $input = $request->validate([
+            'nama' => 'required|unique:fakultas',
+            'singkatan' => 'required|max:5',
+            'dekan' => 'required',
+            'wakil_dekan' => 'required',
+        ]);
+
+        // simpan data ke tabel fakultas
+        Fakultas::create($input);
+
+        // redirect ke route fakultas.index
+        return redirect()->route('fakultas.index')->with('success', 'Fakultas berhasil ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Fakultas $fakultas)
+    public function show( $fakultas)
     {
-        //
+        $fakultas = Fakultas::findOrFail($fakultas);
+        //dd($fakultas);
+        return view('fakultas.show', compact('fakultas'));
     }
 
     /**
@@ -63,6 +75,9 @@ class FakultasController extends Controller
      */
     public function destroy(Fakultas $fakultas)
     {
-        //
+        $fakultas = Fakultas::findOrFail($fakultas);
+        //dd($fakultas);
+        $fakultas->delete();
+        return redirect()->route('fakultas.index')->with('success', 'Fakultas berhasil dihapus.');
     }
 }
